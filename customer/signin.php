@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <title>Signin</title>
+</head>
+<body class="auth-page-body">
+<img src="../assets/images/1688361055amazon-logo-png.png" class="auth-amazon-logo">
+    <div class="input-container">
+        <h2 class="header-label-auth">Sign in</h2>
+        <form action="../controller/signin_process.php" method="POST">
+            <input type="hidden" name="role" value="customer">
+
+            <label for="email" class="label-input">Email</label>
+            <input type="email" name="email" class="input-field" required><br>
+            
+            <label for="password" class="label-input">Password</label> 
+            <input type="password" name="password" class="input-field" required><br>
+            
+            <button type="submit" class="submit-btn">Continue</button>
+            <a href="#" class="forget-password">Forget password?</a>
+
+            <?php
+                if(isset($_GET['error'])){
+                    if($_GET['error'] == 'invalid_email'){
+                        echo "<p class='error-message'>Invalid email format</p>";
+                    } else if($_GET['error'] == 'password_too_short'){
+                        echo "<p class='error-message'>Password must be at least 8 characters long</p>";
+                    } else if($_GET['error'] == 'signin_failed'){
+                        echo "<p class='error-message'>account not yet available</p>";
+                    }
+                }
+            ?>
+
+        </form>
+    </div>
+    <p class="or-label">New To Amazon ?</p>
+    <div class="swap-auth-container">
+        <a href="signup.php" class="swap-auth-button">Create your Amazon account</a>
+    </div>
+</body>
+</html>

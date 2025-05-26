@@ -1,0 +1,568 @@
+@font-face {
+    font-family: 'Amazon Ember';
+    src: url('../fonts/Amazon Ember.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* General Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Amazon Ember';
+}
+
+body {
+    background-color: #eaeaea;
+}
+
+.nav-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #131921;
+    color: white;
+    padding: 10px;
+    flex-wrap: wrap;
+}
+
+/* Left side: logo and delivery location */
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#amazon-logo {
+    width: 100px;
+    object-fit: contain;
+}
+
+.delivery-location {
+    display: flex;
+    align-items: center;
+    color: white;
+    gap: 5px;
+}
+
+#white-location-icon {
+    width: 20px;
+}
+
+.location-description span {
+    display: block;
+    font-size: 12px;
+}
+
+/* Search bar */
+.nav-fill-search {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0 10px;
+    min-width: 250px;
+    max-width: 900px; /* batas maksimum */
+}
+
+.form-fill-search {
+    display: flex;
+    width: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: white;
+}
+
+
+#category-dropwdown-button {
+    padding: 8px;
+    background-color: #e6e6e6;
+    border: none;
+    font-size: 14px;
+}
+
+#field-search {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    font-size: 14px;
+    min-width: 0; /* penting agar input tidak melebar terlalu banyak */
+}
+
+
+#button-search {
+    background-color: #febd69;
+    border: none;
+    padding: 0 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#icon-search {
+    width: 20px;
+    height: 20px;
+}
+
+/* Right tools: language, auth, orders, cart */
+.nav-tools {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.nav-tools > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: white;
+    font-size: 12px;
+}
+
+.language, .Authentication, .returns-order, .cart {
+    cursor: pointer;
+}
+
+.language, .Authentication {
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+#country-flag {
+    width: 20px;
+    height: 15px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+}
+
+#language-dropdown, #auth-menu {
+    background: transparent;
+    color: white;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.cart {
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+#cart-icon {
+    width: 24px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-top {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 10px 15px;
+    }
+
+    .nav-left, .nav-tools {
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .nav-fill-search {
+        order: 2;
+        width: 100%;
+    }
+
+    .nav-tools {
+        order: 3;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    .form-fill-search {
+        max-width: 100%;
+    }
+
+    #amazon-logo {
+        width: 80px;
+    }
+
+    .location-description span {
+        font-size: 10px;
+    }
+}
+
+.nav-bottom {
+    display: flex;
+    align-items: center;
+    background-color: #232f3e;
+    color: white;
+    padding: 10px 20px;
+    gap: 20px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+}
+
+/* Hamburger Menu */
+.hamburger-menu {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+#humberger-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* Horizontal scrolling menu list */
+.nav-bottom ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    gap: 15px;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+}
+
+.nav-bottom ul::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+}
+
+.nav-bottom li a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 5px 0;
+    white-space: nowrap;
+}
+
+.nav-bottom li a:hover {
+    text-decoration: underline;
+}
+
+/* Optional tweak for smaller screen spacing */
+@media (max-width: 768px) {
+    .nav-bottom {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .nav-bottom ul {
+        gap: 10px;
+    }
+
+    .nav-bottom li a {
+        font-size: 13px;
+    }
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-auto-rows: 200px;
+    gap: 16px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  .card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    text-decoration: none;
+    color: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  }
+  
+  .card h3 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .card p {
+    font-size: 0.85rem;
+    color: black;
+    font-weight: bold;
+  }
+
+  .card {
+    background-blend-mode: overlay;
+    background-color: rgba(0, 0, 0, 0.3); /* untuk bantu teks terlihat */
+    color: white;
+  }
+  
+  
+  /* Custom ukuran kartu untuk tampilan asimetris */
+  .card1 {
+    grid-column: span 1;
+    grid-row: span 2;
+  }
+  
+  .card2 {
+    grid-column: span 1;
+    grid-row: span 2;
+  }
+  
+  .card3 {
+    grid-row: span 2;
+  }
+  
+  .card4 {
+    grid-column: span 1;
+    grid-row: span 2;
+  }
+  
+  .card5 {
+    grid-column: span 1;
+    grid-row: span 2;
+  }
+  
+  .card6 {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  
+  .card7 {
+    grid-column: span 1;
+    grid-row: span 2;
+  }
+  
+  .card8 {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+  
+  .card9 {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+  
+  .card10 {
+    grid-column: span 1;
+  }
+
+
+  
+  /* Responsive tweaks */
+  @media (max-width: 768px) {
+    .content-grid {
+      grid-template-columns: 1fr;
+      grid-auto-rows: auto;
+    }
+  
+    .card {
+      height: auto;
+    }
+  
+    .card1, .card3, .card6, .card9 {
+      grid-column: span 1;
+      grid-row: span 1;
+    }
+  }
+
+  .all-store-sections {
+    margin: 40px;
+}
+
+.carousel-section {
+    margin-bottom: 50px;
+}
+
+.carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.carousel-header h3 {
+    margin: 0;
+}
+
+.carousel-wrapper {
+    position: relative;
+    overflow: hidden;
+    padding: 10px 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+}
+
+.product-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 15px;
+    padding-bottom: 10px;
+}
+
+.product-card {
+    width: 200px;
+    margin: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.product-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-detail {
+    padding: 10px;
+    text-align: center;
+}
+
+.view-product-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 6px 12px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.view-product-button:hover {
+    background-color: #0056b3;
+}
+
+
+.product-detail .price {
+    font-weight: bold;
+    color: green;
+    margin: 5px 0;
+}
+
+.carousel-prev,
+.carousel-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    cursor: pointer;
+    z-index: 1;
+    padding: 10px;
+    border-radius: 50%;
+}
+
+.carousel-prev {
+    left: 5px;
+}
+
+.carousel-next {
+    right: 5px;
+}
+
+.no-products-message {
+    padding: 20px;
+    text-align: center;
+    color: #999;
+    font-style: italic;
+}
+
+.footer {
+    background-color: #f7f7f7;
+    color: #333;
+    padding: 40px 60px 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-top: 1px solid #ddd;
+}
+
+.footer h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: #111;
+    text-transform: uppercase;
+}
+
+.footer a {
+    display: block;
+    color: #555;
+    text-decoration: none;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.footer a:hover {
+    color: #0073e6;
+    transform: translateX(5px);
+}
+
+.footer .aditional-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.footer .aditional-content > div {
+    flex: 1 1 200px;
+    min-width: 180px;
+}
+
+.footer select {
+    padding: 6px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.footer select:hover {
+    border-color: #0073e6;
+}
+
+.footer .copyright-licence-section {
+    text-align: center;
+    font-size: 13px;
+    color: #999;
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+}
+
+/* Responsive for smaller screens */
+@media screen and (max-width: 768px) {
+    .footer {
+        padding: 30px 20px;
+    }
+
+    .footer .aditional-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .footer .aditional-content > div {
+        width: 100%;
+    }
+}
