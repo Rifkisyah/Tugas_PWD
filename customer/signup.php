@@ -11,7 +11,7 @@
     <div class="input-container">
         <h2 class="header-label-auth">Create Account</h2>
         <form action="../controller/signup_process.php" method="POST">
-        <input type="hidden" name="role" value="customer">
+            <input type="hidden" name="role" value="customer">
 
             <label for="username" class="label-input">Your Name</label>
             <input type="text" name="username" class="input-field" required><br>
@@ -23,7 +23,7 @@
             <input type="password" name="password" class="input-field" required><br>
 
             <label for="password" class="label-input">Re-Enter Password</label> 
-            <input type="password" name="re-enter-password" class="input-field" required><br>
+            <input type="password" name="confirm_password" class="input-field" required><br>
             
             <button type="submit" class="submit-btn">Continue</button>
             <?php

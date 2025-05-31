@@ -1,6 +1,6 @@
 <?php
 require_once('../model/stores.php');
-$stores = new Stores();
+$stores = new Store();
 
 $error = '';
 $success = '';
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (in_array($fileExtension, $allowedExtensions)) {
             $newFileName = uniqid('img_') . '.' . $fileExtension;
-            $destPath = '../assets/images/' . $newFileName;
+            $destPath = '../assets/images/store/' . $newFileName;
 
             if (move_uploaded_file($fileTmpPath, $destPath)) {
                 $store_image = $newFileName;

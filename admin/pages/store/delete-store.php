@@ -1,6 +1,6 @@
 <?php
 require_once('../model/stores.php');
-$store = new Stores();
+$store = new Store();
 
 if (isset($_GET['id'])) {
     $store_id = $_GET['id'];

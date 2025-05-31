@@ -55,13 +55,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $signupSuccess = $auth->signup($username, $email, $password, $confirm_password, $role_id);
 
     if ($signupSuccess) {
-        $_SESSION['id'] = $auth->getUserId($email);
+        $_SESSION['user_id'] = $auth->getUserId($email);
         $_SESSION['username'] = $auth->getUsername($email);
 
         if ($rolename === 'admin') {
+            $_SESSION['role_id'] = $role->getRoleId('admin');
             header("Location: ../admin/dashboard.php");
             exit;
         } elseif ($rolename === 'customer') {
+            $_SESSION['role_id'] = $role->getRoleId('customer');
             header("Location: ../customer/dashboard.php");
             exit;
         }

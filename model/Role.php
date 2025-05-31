@@ -13,7 +13,7 @@ class Role {
     }
 
     public function getRoleId($role_name){
-        $query = "SELECT role_id FROM " . $this->table_name . " WHERE role_name = ?";
+        $query = "SELECT role_id FROM role_users WHERE role_name = ?";
         $stmt = $this->conn->getConnection()->prepare($query);
         $stmt->bind_param("s", $role_name);
         $stmt->execute();

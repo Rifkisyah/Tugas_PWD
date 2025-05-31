@@ -1,7 +1,9 @@
 <?php
 require_once('../model/products.php');
+require_once('../model/stores.php');
 $product = new Product();
-$stores = $product->getAllStore();
+$store = new Store();
+$stores = $store->getAllStore();
 $category_products = $product->getAllCategoryProduct();
 
 $error = '';
@@ -14,27 +16,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $product_description = trim($_POST['product_description']);
     $product_price = floatval($_POST['product_price']);
     $product_stock = intval($_POST['product_stock']);
+    $product_condition = trim($_POST['product_condition']);
     
-    $product_image = $existingProduct['product_image'] ?? 'no-image-product.jpg';
-    if (isset($_FILES['product_image']) && $_FILES['product_image']['error'] === UPLOAD_ERR_OK) {
-        $fileTmpPath = $_FILES['product_image']['tmp_name'];
-        $fileName = $_FILES['product_image']['name'];
-        $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+    $product_images = []; // array penampung gambar content
+    $allowed = ['jpg', 'jpeg', 'png', 'gif'];
 
-        if (in_array($fileExtension, $allowedExtensions)) {
-            $newFileName = uniqid('img_') . '.' . $fileExtension;
-            $destPath = '../assets/images/' . $newFileName;
-
-            if (move_uploaded_file($fileTmpPath, $destPath)) {
-                $product_image = $newFileName;
+    // ========== Proses upload preview ==========
+    $product_preview = 'no-image-product.jpg';
+    if (isset($_FILES['product_preview']) && $_FILES['product_preview']['error'] === UPLOAD_ERR_OK) {
+        $tmp = $_FILES['product_preview']['tmp_name'];
+        $name = $_FILES['product_preview']['name'];
+        $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+    
+        if (in_array($ext, $allowed)) {
+            $newName = uniqid('preview_') . '.' . $ext;
+            $dest = '../assets/images/product/' . $newName;
+    
+            if (move_uploaded_file($tmp, $dest)) {
+                $product_preview = $newName;
             } else {
-                $error = "Gagal memindahkan file gambar.";
+                $error = "Gagal upload gambar preview.";
             }
         } else {
-            $error = "Format file gambar tidak didukung. Hanya JPG, PNG, GIF.";
+            $error = "Format gambar preview tidak valid.";
         }
     }
+    
+    // ========== Proses upload gambar tambahan ==========
+    if (!empty($_FILES['product_images']['name'][0])) {
+        foreach ($_FILES['product_images']['tmp_name'] as $index => $tmpName) {
+            if ($_FILES['product_images']['error'][$index] === UPLOAD_ERR_OK) {
+                $origName = $_FILES['product_images']['name'][$index];
+                $ext = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
+                $newFileName = uniqid('content_') . '.' . $ext;
+                $dest = '../assets/images/product/' . $newFileName;
+    
+                if (in_array($ext, $allowed) && move_uploaded_file($tmpName, $dest)) {
+                    $product_images[] = $newFileName;
+                }
+            }
+        }
+    }    
 
     // Validasi input
     if (strlen($product_name) < 3) {
@@ -57,13 +79,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Gagal Menambahkan Produk. Stok Produk Tidak Boleh Kosong";
     } else if (!is_numeric($product_price) || !is_numeric($product_stock)) {
         $error = "Harga dan stok harus berupa angka.";
+    } elseif (!empty($product_condition) && !in_array($product_condition, ['New', 'Second-hand'])) {
+        $error = "Kondisi produk harus 'Baru' atau 'Bekas'.";
     } else {
         // Cek apakah produk sudah ada di toko yang sama
         if ($product->isProductExist($store_id, $product_name)) {
             $error = "Produk dengan nama yang sama sudah ada di toko ini.";
         } else {
             // Insert data produk
-            if ($product->insert($store_id, $product_name, $product_description, $product_price, $product_stock, $product_image, $category_product_id)) {
+            if($product->insert($store_id, $product_name, $product_description, $product_price, $product_stock, $product_condition, $product_preview, $category_product_id, $product_images)){
                 $success = "Produk berhasil ditambahkan.";
             } else {
                 $error = "Gagal menambahkan produk.";
@@ -156,12 +180,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
 
       <div class="mb-3">
-        <label for="product_image" class="form-label">Gambar Produk</label>
-        <input type="file" class="form-control" id="product_image" name="product_image" accept="image/*" onchange="previewImage(event)">
+        <label for="product_condition" class="form-label">Kondisi Produk</label>
+        <input type="text" class="form-control" id="product_condition" name="product_condition"
+          value="<?= htmlspecialchars($existingProduct['product_condition'] ?? '') ?>">
+      </div>
+
+      <div class="mb-3">
+        <label for="product_preview" class="form-label">Gambar Preview Produk</label>
+        <input type="file" class="form-control" id="product_preview" name="product_preview" accept="image/*" onchange="previewImage(event)">
         <div class="mt-3">
-          <img id="imagePreview" src="<?= $existingProduct['product_image'] ? '../assets/images/' . $existingProduct['product_image'] : '' ?>" alt="Preview" style="max-width: 100%; max-height: 200px;">
+          <img id="imagePreview" src="<?= $existingProduct['product_preview'] ? '../assets/images/product/' . $existingProduct['preview_image'] : '' ?>" alt="Preview" style="max-width: 100%; max-height: 200px;">
         </div>
       </div>
+
+      <div class="mb-3">
+        <label for="product_images" class="form-label">Gambar Produk (Bisa lebih dari satu)</label>
+        <input type="file" class="form-control" id="product_images" name="product_images[]" accept="image/*" multiple>
+      </div>
+
     </div>
   </div>
 

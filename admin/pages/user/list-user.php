@@ -63,7 +63,7 @@ if (isset($_GET['status'])) {
                         ?>
                         <tr id="row-<?= $index ?>">
                             <td><?=$row['user_id'] ?></td>
-                            <td><img id="imagePreview" src="<?= $photo_profile['photo_profile'] ? '../assets/images/' . $photo_profile['photo_profile'] : '' ?>" alt="Preview" style="max-width: 100%; max-height: 100px;"></td>
+                            <td><img id="imagePreview" src="<?= $photo_profile['photo_profile'] ? '../assets/images/user/' . $photo_profile['photo_profile'] : '' ?>" alt="Preview" style="max-width: 100%; max-height: 100px;"></td>
                             <td><?=$row['username'] ?></td>
                             <td><?=$row['email'] ?></td>
                             <td><?=$row['role_name'] ?></td>

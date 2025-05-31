@@ -1,14 +1,14 @@
 <?php
     session_start();
 
-    if(!isset($_SESSION['id'])){
+    if(!isset($_SESSION['user_id'])){
         header('location: index.php');
     }
 
     require_once('../model/users.php');
     $user = new Users();
     require_once('../model/stores.php');
-    $store = new Stores();
+    $store = new Store();
     require_once('../model/products.php');
     $product = new Product();
 ?>

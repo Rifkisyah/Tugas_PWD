@@ -1,7 +1,7 @@
 <?php
     require_once('../model/products.php');
     $product = new Product();
-    $stores = $product->getAllStore();
+    $stores = $product->getAllProduct();
     $category_products = $product->getAllCategoryProduct();
 
     if (!isset($_GET['id'])) {
@@ -13,7 +13,7 @@
     $error = '';
     $success = '';
 
-    $existingProduct = $product->getById($product_id);
+    $existingProduct = $product->getProductById($product_id);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$existingProduct) {

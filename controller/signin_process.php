@@ -45,14 +45,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        $_SESSION['id'] = $auth->getUserId($email);
+        $_SESSION['user_id'] = $auth->getUserId($email);
         $_SESSION['username'] = $auth->getUsername($email);
         $_SESSION['role'] = $rolename;
 
         if ($rolename === 'admin') {
+            $_SESSION['role_id'] = $role->getRoleId('admin');
             header("Location: ../admin/dashboard.php");
             exit;
         } else {
+            $_SESSION['role_id'] = $role->getRoleId('customer');
             header("Location: ../customer/dashboard.php");
             exit;
         }

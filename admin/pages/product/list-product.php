@@ -45,7 +45,7 @@ if (isset($_GET['status'])) {
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Gambar Produk</th>
+                    <th>Preview Produk</th>
                     <th>Nama</th>
                     <th>Toko</th>
                     <th>kategori</th>
@@ -67,14 +67,14 @@ if (isset($_GET['status'])) {
                         ?>
                         <tr id="row-<?= $index ?>">
                             <td><?=$row['product_id'] ?></td>
-                            <td><img id="imagePreview" src="<?= $row['product_image'] ? '../assets/images/' . $row['product_image'] : '' ?>" alt="Preview" style="max-width: 100%; max-height: 1000px;"></td>
+                            <td><img id="imagePreview" src="<?= $row['product_preview'] ? '../assets/images/product/' . $row['product_preview'] : '' ?>" alt="Preview" style="max-width: 100%; max-height: 1000px;"></td>
                             <td><?=$row['product_name'] ?></td>
                             <td><?=$row['store_name'] ?></td>
                             <td><?=$row['category_product_name'] ?></td>
                             <td><?=$row['product_description'] ?></td>
                             <td><?=$row['product_price'] ?></td>
                             <td><?=$row['product_stock'] ?></td>
-                            <td><?=$row['product_image'] ?></td>
+                            <td><?=$row['product_preview'] ?></td>
                             <td><?=$row['created_at'] ?></td>
                             <td>
                                 <a href="#" class="unsee"><i class="fa fa-eye text-success"></i></a> 

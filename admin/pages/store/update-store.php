@@ -1,13 +1,13 @@
 <?php
 require_once('../model/stores.php');
-$stores = new Stores();
+$stores = new Store();
 
 if (!isset($_GET['id'])) {
     header("Location: dashboard.php?module=store&pages=list-store");
     exit();
 }
 $store_id = $_GET['id'];
-$existingStore = $stores->getById($store_id);
+$existingStore = $stores->getStoreById($store_id);
 
 $error = '';
 $success = '';
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (in_array($fileExtension, $allowedExtensions)) {
             $newFileName = uniqid('img_') . '.' . $fileExtension;
-            $destPath = '../assets/images/' . $newFileName;
+            $destPath = '../assets/images/store/' . $newFileName;
             if (move_uploaded_file($fileTmpPath, $destPath)) {
                 $store_image = $newFileName;
             } else {
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($error)) {
         if ($stores->update($store_id, $store_name, $owner_name, $address, $email, $contact, $store_image)) {
             $success = "Data toko berhasil diperbarui.";
-            $existingStore = $stores->getById($store_id); // Refresh data
+            $existingStore = $stores->getStoreById($store_id); // Refresh data
         } else {
             $error = "Gagal memperbarui data toko. Email mungkin sudah digunakan.";
         }

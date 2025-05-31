@@ -1,3 +1,19 @@
+<?php
+    session_start();
+    // if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 2) {
+    //     header("Location: signin.php");
+    //     exit();
+    // }
+    require_once '../model/category-products.php';
+
+    $categoryObj = new CategoryProducts();
+    $categories = $categoryObj->getAllCategories();
+
+    $onclick = isset($_SESSION['user_id']) 
+    ? "window.location.href='dashboard.php?module=cart&pages=shopping-cart'" 
+    : "return showLoginModal(event);";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,11 +21,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tubes - Spend Your Money</title>
     <link rel="stylesheet" href="../assets/css/customer-style.css">
+    <link rel="stylesheet" href="/assets/css/product-detail-style.css">
 </head>
 <body class="home-page-body">
     <div class="nav-top">
         <div class="nav-left">
-            <img src="https://freelogopng.com/images/all_img/1688364164amazon-logo-transparent.png" alt="amazon-logo" id="amazon-logo">
+            <img src="https://freelogopng.com/images/all_img/1688364164amazon-logo-transparent.png" alt="amazon-logo" id="amazon-logo" onclick="window.location.href='dashboard.php'">
             <div class="delivery-location">
                 <img src="https://img.icons8.com/?size=100&id=WtxXrJ8eK5wU&format=png&color=FFFFFF" id="white-location-icon">
                 <div class="location-description">
@@ -19,11 +36,16 @@
             </div>
         </div>
         <div class="nav-fill-search">
-            <form method="post" action="#" class="form-fill-search">
-                <select type="dropdown" id="category-dropwdown-button">
-                    <option>All</option>
+            <form method="get" action="#" class="form-fill-search">
+                <select id="category-dropwdown-button" name="category_id" onchange="this.form.submit()">
+                    <option value="All">All</option>
+                    <?php foreach ($categories as $category): ?>
+                        <option value="<?= $category['category_product_id'] ?>" <?= (isset($_GET['category_id']) && $_GET['category_id'] == $category['category_product_id']) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($category['category_product_name']) ?>
+                        </option>
+                    <?php endforeach; ?>
                 </select>
-                <input type="text" id="field-search">
+                <input type="text" id="field-search" name="q" value="<?= isset($_GET['q']) ? htmlspecialchars($_GET['q']) : '' ?>" placeholder="Search...">
                 <button type="submit" id="button-search">
                     <img src="https://cdn-icons-png.flaticon.com/128/54/54481.png" id="icon-search">
                 </button> 
@@ -36,17 +58,50 @@
                     <option>ID</option>
                 </select>
             </div>
-            <div class="Authentication">
-                <a href="signin.php" style="cursor: pointer; background-color: rgb(19, 25, 33); color: white; border: none; text-decoration: none;">Hello, Sign in</a>
-                <select type="dropdown" id="auth-menu">
-                    <option>Account & Lists</option>
-                </select>
+            <!-- Pastikan session_start(); sudah dijalankan di file ini -->
+            <div class="authentication" onmouseover="showDropdown()" onmouseout="hideDropdown()">
+                <a href="<?= isset($_SESSION['username']) ? '#' : 'signin.php' ?>" class="auth-button">
+                    <?= isset($_SESSION['username']) ? 'Hello, ' . htmlspecialchars($_SESSION['username']) : 'Hello, sign in'; ?>
+                    <br>
+                    <span style="font-weight: bold;">Account & Lists</span>
+                </a>
+                <div class="auth-dropdown" id="authDropdown">
+                    <?php if (!isset($_SESSION['username'])): ?>
+                        <button class="sign-in-btn" onclick="window.location.href='signin.php'">Sign in</button>
+                        <p class="new-customer">New customer? <a href="signup.php">Start here.</a></p>
+                    <?php else: ?>
+                        <p style="margin: 0 0 10px 0; font-size: 13px;">Hello, <strong><?= htmlspecialchars($_SESSION['username']) ?></strong></p>
+                        <button class="logout-btn" onclick="window.location.href='signout.php'">Sign out</button>
+                    <?php endif; ?>
+                    
+                    <div class="dropdown-columns">
+                        <div class="column">
+                            <h4>Your Lists</h4>
+                            <a href="#">Create a List</a>
+                            <a href="#">Find a List or Registry</a>
+                        </div>
+                        <div class="column">
+                            <h4>Your Account</h4>
+                            <a href="#">Account</a>
+                            <a href="#">Orders</a>
+                            <a href="#">Recommendations</a>
+                            <a href="#">Browsing History</a>
+                            <a href="#">Watchlist</a>
+                            <a href="#">Video Purchases & Rentals</a>
+                            <a href="#">Kindle Unlimited</a>
+                            <a href="#">Content & Devices</a>
+                            <a href="#">Subscribe & Save Items</a>
+                            <a href="#">Memberships & Subscriptions</a>
+                            <a href="#">Music Library</a>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="returns-order">
                 <span>Returns</span>
                 <span>& Orders</span>
             </div>
-            <div class="cart">
+            <div class="cart" onclick="<?= $onclick ?>">
                 <img src="https://img.icons8.com/?size=100&id=9671&format=png&color=FFFFFF" id="cart-icon">
                 <span>Cart</span>
             </div>
@@ -66,112 +121,28 @@
         </ul>
     </div>
 
-    <div class="content-grid">
-        <a href="#" class="card card1" style="background-image: url('https://i.pinimg.com/474x/13/48/9c/13489ce8e1ede4630f4ab29b1a338fa0.jpg'); background-size: cover;">
-            <h3>Save on personal care</h3>
-            <p>shop now</p>
-        </a>
-        <a href="#" class="card card2" style="background-image: url('https://i.pinimg.com/474x/11/a3/cc/11a3cc7960fdd1cd1e8e196415b35183.jpg'); background-size: cover;">
-            <h3>La Roche-Posay just landed</h3>
-            <p>shop now</p>
-        </a>
-        <a href="#" class="card card3" style="background-image: url('https://i.pinimg.com/474x/ac/c3/56/acc356927064f2499cd0b90ff140389b.jpg'); background-size: cover;">
-            <h3>Top 100 Easter basket fillers</h3>
-            <p>shop now</p>
-        </a>
-        <a href="#" class="card card4" style="background-image: url('https://i.pinimg.com/474x/93/ab/5a/93ab5a8222234d2b015bc62a24ea2d95.jpg'); background-size: cover;">
-            <h3>The women's shoe edit</h3>
-            <p>shop now</p>
-        </a>
-        <a href="#" class="card card5" style="background-image: url('https://i.pinimg.com/474x/47/19/be/4719be16543ca429db54adfd135ec76f.jpg'); background-size: cover;">
-            <h3>Top style trends for women</h3>
-            <p>shop now</p>
-        </a>
-        <a href="#" class="card card6" style="background-image: url('https://i.pinimg.com/474x/3d/c1/35/3dc135d38de489358f85ddd0885392eb.jpg'); background-size: cover; background-position: center;">
-            <h3>Up to 65% off</h3>
-            <p>shop now</p>
-        </a>
-        <a href="#" class="card card7" style="background-image: url('https://i.pinimg.com/474x/45/d4/6a/45d46aeb46abd6cad7298b2b202596f8.jpg'); background-size: cover;">
-            <h3>Patio upgrades for all</h3>
-            <p>shop now</p>
-        </a>
-        <a href="#" class="card card8" style="background-image: url('https://i.pinimg.com/474x/b9/de/96/b9de96db62c05c0c4e90975e629c4384.jpg'); background-size: cover;">
-            <h3>Time to glow</h3>
-            <p>shop now</p>
-        </a>
-        <a href="#" class="card card9" style="background-image: url('https://i.pinimg.com/474x/c1/c8/fe/c1c8fe897dbe6c95ebe675f63ec01a55.jpg'); background-size: cover;">
-            <h3>Free shipping with Walmart+</h3>
-            <p>shop now</p>
-        </a>
-        <a href="#" class="card card10" style="background-image: url('https://i.pinimg.com/474x/83/70/7d/83707d6a9f7e4a31c4868efc262f93fc.jpg'); background-size: cover;">
-            <h3>More offers inside</h3>
-            <p>shop now</p>
-        </a>
+    <div class="container-content">
+        <?php
+            $page = 'pages/dashboard-main.php';
+            if(isset($_GET['module'])){
+              $page = 'pages/'. $_GET['module'].'/'.$_GET['pages'].'.php';
+            }
+            require($page);
+          ?>
+      </div><!--END container-fluid-->
     </div>
 
-    <?php
-        require_once('../model/Stores.php');
-        require_once('../model/Products.php');
-
-        $storeObj = new Stores();
-        $productObj = new Product();
-
-        $stores = $storeObj->getAllStores();
-    ?>
-
-    <div class="all-store-sections">
-        <?php foreach ($stores as $store): 
-            $products = $productObj->getAllProductById($store['store_id']);
-        ?>
-        <div class="carousel-section">
-            <div class="carousel-header">
-                <h3><?= htmlspecialchars($store['store_name']) ?></h3>
-                <a href="#">View All</a>
-            </div>
-
-            <?php if (empty($products)): ?>
-                <div class="no-products-message">
-                    <p><em>TIDAK ADA PRODUK DI TOKO INI.</em></p>
-                </div>
-            <?php else: ?>
-                <div class="carousel-wrapper">
-                    <button class="carousel-prev">&#10094;</button>
-                    <div class="product-carousel">
-                        <?php foreach ($products as $product): 
-                            $photo = isset($product['product_image']) && is_string($product['product_image']) && $product['product_image'] !== ''
-                            ? $product['product_image']
-                            : 'no-image-product.jpg';
-                        ?>
-                        <div class="product-card">
-                            <img src="/assets/images/<?php echo htmlspecialchars($photo); ?>" alt="..." onerror="this.src='/assets/images/no-image-product.jpg'" class="product-image">
-                            <div class="product-detail">
-                                <h4><?= htmlspecialchars($product['product_name']) ?></h4>
-                                <p class="price">$<?= number_format($product['product_price'], 2) ?></p>
-                                <p><?= htmlspecialchars($product['product_description']) ?></p>
-                                <a href="product-detail.php?id=<?= urlencode($product['product_id']) ?>" class="view-product-button">Lihat Produk</a>
-                            </div>
-                        </div>
-                        <?php endforeach; ?>
-                    </div>
-                    <button class="carousel-next">&#10095;</button>
-                </div>
-            <?php endif; ?>
+    <div id="loginModal" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+        <h2>Account Required</h2>
+        <p>To proceed with this action, please log in or register first.</p>
+        <div class="modal-actions">
+            <a href="signin.php" class="btn amazon-primary">signin</a>
+            <a href="signup.php" class="btn amazon-secondary">signup</a>
         </div>
-        <?php endforeach; ?>
+        <button class="modal-close" onclick="closeLoginModal()">×</button>
+        </div>
     </div>
-
-
-    <script>
-        document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
-            const carousel = wrapper.querySelector('.product-carousel');
-            wrapper.querySelector('.carousel-next').addEventListener('click', () => {
-                carousel.scrollBy({ left: 220, behavior: 'smooth' });
-            });
-            wrapper.querySelector('.carousel-prev').addEventListener('click', () => {
-                carousel.scrollBy({ left: -220, behavior: 'smooth' });
-            });
-        });
-    </script>
 
     <div class="footer">
         <div class="aditional-content">
@@ -254,5 +225,35 @@
             <p>All reserved &#xA9; 2025 marketplace</p>
         </div>
     </div>
+    <script>
+        const dropdown = document.getElementById('authDropdown');
+        const overlay = document.getElementById('pageOverlay');
+        
+        function showDropdown() {
+            dropdown.style.display = 'block';
+            overlay.style.display = 'block';
+        }
+        
+        function hideDropdown() {
+            dropdown.style.display = 'none';
+            overlay.style.display = 'none';
+        }
+        
+        // Supaya klik di overlay juga menutup dropdown
+        overlay.addEventListener('click', () => {
+            hideDropdown();
+        });
+
+        function showLoginModal(event) {
+            event.preventDefault();
+            document.getElementById('loginModal').style.display = 'flex';
+            return false;
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+    </script>
+    <div id="pageOverlay"></div>
 </body>
 </html>

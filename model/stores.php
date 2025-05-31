@@ -1,12 +1,28 @@
 <?php
 require_once('Connection.php');
 
-class Stores extends Connection {
+class Store extends Connection {
     private $conn;
 
     public function __construct() {
         parent::__construct();
         $this->conn = $this->getConnection();
+    }
+
+    public function getAllStore() {
+        $query = "SELECT * FROM stores";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = [];
+
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+        }
+
+        return $data;
     }
 
     public function insert($store_name, $owner_name, $address, $email, $contact, $store_image) {
@@ -53,7 +69,7 @@ class Stores extends Connection {
         return $stmt->execute();
     }
     
-    public function getById($store_id) {
+    public function getStoreById($store_id) {
         $query = "SELECT * FROM stores WHERE store_id = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param("i", $store_id);
@@ -67,8 +83,24 @@ class Stores extends Connection {
         $query = "DELETE FROM stores WHERE store_id = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param("i", $store_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-        return $stmt->execute();
+        $defaultImage = 'default-store-photo-profile.jpg';
+        $imageFolder = '../assets/images/store/';
+    
+        // Hapus file gambar (kecuali default)
+        while ($row = $result->fetch_assoc()) {
+            $filename = $row['filename'];
+            if ($filename !== $defaultImage) {
+                $filePath = $imageFolder . $filename;
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+            }
+        }
+
+        return $stmt->affected_rows > 0;
     }
 
     public function getAllStores() {

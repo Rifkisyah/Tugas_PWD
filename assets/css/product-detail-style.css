@@ -1,0 +1,501 @@
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 3fr 2fr 1.5fr;
+  gap: 30px;
+  background: white;
+  padding: 20px;
+  max-width: 1300px;
+  margin: auto;
+  margin-bottom: 50px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.left {
+  overflow: hidden;
+  position: relative;
+}
+
+.zoom-container {
+  overflow: hidden;
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+}
+
+.zoom-container img {
+  width: 100%;
+  transition: transform 0.2s ease;
+  border-radius: 10px;
+}
+
+.left img {
+  width: 100%;
+  transition: transform 0.2s ease;
+}
+
+.left .zoom-container:hover img {
+  transform: scale(1.8);
+  cursor: zoom-in;
+}
+
+.middle .title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.store-info-product {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.store-info-product img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ccc;
+}
+
+.store-info-product span {
+  font-weight: bold;
+  color: #333;
+}
+
+.rating {
+  color: #f0c14b;
+  font-size: 18px;
+  color: #ffaa00;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.price {
+  font-size: 24px;
+  color: #B12704;
+  margin-bottom: 15px;
+}
+
+.info-list {
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+.about {
+  margin-top: 25px;
+}
+
+.about h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.about p {
+  font-size: 14px;
+  color: #333;
+}
+
+.right {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #fafafa;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Bungkus label dan input supaya rapih berdampingan */
+.quantity-wrapper {
+  display: inline-flex;
+  align-items: center;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  padding: 4px 8px;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.quantity-wrapper:focus-within {
+  border-color: #4a90e2;
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+}
+
+.quantity-wrapper label {
+  font-weight: 600;
+  color: #333;
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+.quantity-wrapper input[type="number"] {
+  width: 100%;
+  padding: 5px 8px;
+  font-size: 14px;
+  border: none;
+  background: transparent;
+  text-align: center;
+  -moz-appearance: textfield; /* Hapus spinner di Firefox */
+}
+
+.quantity-wrapper input[type="number"]::-webkit-inner-spin-button,
+.quantity-wrapper input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+  /* Hapus spinner di Chrome, Safari */
+}
+
+
+.stock {
+  font-weight: bold;
+  color: green;
+  margin-bottom: 20px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.btn {
+  padding: 14px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.3s, transform 0.2s;
+  font-weight: bold;
+}
+
+.btn-cart {
+  background-color: #FFD814;
+  color: #111;
+  width: 100%;
+}
+
+.btn-cart:hover {
+  background-color: #f7ca00;
+  transform: translateY(-2px);
+}
+
+.btn-buy {
+  background-color: #FFA41C;
+  color: white;
+}
+
+.btn-buy:hover {
+  background-color: #f08804;
+  transform: translateY(-2px);
+}
+
+/* --- Review Form and List Styling --- */
+
+.review-form, .review-list {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    margin-top: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.review-list{
+    width: 650px;
+    grid-column: 2 span;
+}
+
+.review-form h3, .review-list h3 {
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #555;
+}
+
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+}
+
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #0073e6;
+}
+
+.btn-submit {
+    padding: 10px 20px;
+    background-color: #232f3e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #364960;
+}
+
+/* --- Review List Styling --- */
+.review-item {
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.rating {
+    color: #ffaa00;
+}
+
+.review-comment {
+    color: #444;
+    margin: 5px 0 10px 0;
+    line-height: 1.5;
+}
+
+.review-time {
+    font-size: 12px;
+    color: #999;
+}
+
+.no-review {
+    font-style: italic;
+    color: #777;
+}
+
+@media screen and (max-width: 1000px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .right {
+    margin-top: 20px;
+  }
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  .modal-box {
+    background-color: #fff;
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+    position: relative;
+    text-align: center;
+    animation: slideUp 0.3s ease;
+    font-family: Arial, sans-serif;
+  }
+  
+  .modal-box h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #111;
+  }
+  
+  .modal-box p {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+  }
+  
+  .modal-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .modal-actions .btn {
+    flex: 1;
+    padding: 10px 0;
+    font-weight: bold;
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .amazon-primary {
+    background-color: #f0c14b;
+    border: 1px solid #a88734;
+    color: #111;
+  }
+  
+  .amazon-primary:hover {
+    background-color: #e2b33b;
+  }
+  
+  .amazon-secondary {
+    background-color: #e7e9ec;
+    border: 1px solid #adb1b8;
+    color: #111;
+  }
+  
+  .amazon-secondary:hover {
+    background-color: #d5d8db;
+  }
+  
+  .modal-close {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    font-size: 24px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.2s;
+  }
+  
+  .modal-close:hover {
+    color: #333;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0 }
+    to { opacity: 1 }
+  }
+  
+  @keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0 }
+    to { transform: translateY(0); opacity: 1 }
+  }
+  
+/* Kontainer Zoom */
+.zoom-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 480px;
+  margin: auto;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+}
+
+/* Gambar utama (preview) responsif */
+.zoom-container img {
+  width: 100%;
+  height: auto;
+  max-height: 480px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+/* Panah Navigasi */
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background-color: rgba(255,255,255,0.85);
+  color: black;
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 14px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: background-color 0.2s;
+}
+.nav-arrow:hover {
+  background-color: rgba(255,255,255,1);
+}
+.left-arrow {
+  left: 8px;
+}
+.right-arrow {
+  right: 8px;
+}
+
+/* Thumbnail List */
+.thumbnail-list {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Thumbnail Gambar */
+.thumbnail-list img.thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border 0.2s, transform 0.2s;
+}
+.thumbnail-list img.thumbnail:hover {
+  transform: scale(1.05);
+}
+.thumbnail-list img.thumbnail.active {
+  border-color: #f60;
+}
+
+/* Responsive Breakpoint */
+@media (max-width: 768px) {
+  .zoom-container {
+    max-width: 100%;
+  }
+
+  .zoom-container img {
+    max-height: 300px;
+  }
+
+  .nav-arrow {
+    font-size: 1.5rem;
+    padding: 8px 12px;
+  }
+
+  .thumbnail-list img.thumbnail {
+    width: 50px;
+    height: 50px;
+  }
+}
+

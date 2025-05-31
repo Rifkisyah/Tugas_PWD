@@ -57,7 +57,7 @@ if (isset($_GET['status'])) {
             <tbody>
                 <?php
                     require_once('../model/stores.php');
-                    $store = new Stores();
+                    $store = new Store();
                     $stores = $store->getAllStores();
                     
                     
@@ -66,7 +66,7 @@ if (isset($_GET['status'])) {
                         ?>
                         <tr id="row-<?= $index ?>">
                             <td><?=$row['store_id'] ?></td>
-                            <td><img id="imagePreview" src="<?= $row['store_image'] ? '../assets/images/' . $row['store_image'] : '' ?>" alt="Preview" style="max-width: 100%; max-height: 1000px;"></td>
+                            <td><img id="imagePreview" src="<?= $row['store_image'] ? '../assets/images/store/' . $row['store_image'] : '' ?>" alt="Preview" style="max-width: 100%; max-height: 1000px;"></td>
                             <td><?=$row['store_name'] ?></td>
                             <td><?=$row['store_owner'] ?></td>
                             <td><?=$row['store_address'] ?></td>
