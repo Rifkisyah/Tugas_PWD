@@ -593,6 +593,10 @@ body {
     cursor: pointer;
 }
 
+.product-image:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
 .product-detail {
     flex: 1;
     display: flex;

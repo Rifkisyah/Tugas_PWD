@@ -117,7 +117,11 @@
     <div class="title"><?= htmlspecialchars($product['product_name']) ?></div>
 
     <div class="store-info-product">
-      <img src="/assets/images/store/<?= htmlspecialchars($storeImage) ?>" alt="Store" style="cursor: pointer;">
+      <img src="/assets/images/store/<?= htmlspecialchars($storeImage) ?>" 
+            alt="Store" 
+            style="cursor: pointer;"
+            onclick='window.location.href="dashboard.php?module=store&pages=store-detail&store-id=<?= urlencode($store['store_id']) ?>"'      
+      >
       <span style="cursor: pointer;"><?= htmlspecialchars($store['store_name']) ?></span>
     </div>
 

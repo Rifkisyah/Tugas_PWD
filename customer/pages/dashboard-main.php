@@ -75,8 +75,9 @@
                     <img src="/assets/images/store/<?= htmlspecialchars($storeImage) ?>"
                          alt="<?= htmlspecialchars($store['store_name']) ?>"
                          class="store-image"
-                         onerror="this.src='/assets/images/store/no-image-store.jpg'">
-
+                         onerror="this.src='/assets/images/store/no-image-store.jpg'"     
+                         onclick='window.location.href="dashboard.php?module=store&pages=store-detail&store-id=<?= urlencode($store['store_id']) ?>"'
+                    >
                     <h3><?= htmlspecialchars($store['store_name']) ?></h3>
                 </div>
                 <a href="dashboard.php?module=store&pages=store-product&id=<?= urlencode($store['store_id']) ?>" class="view-all-link">View All</a>
