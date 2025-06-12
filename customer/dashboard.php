@@ -98,7 +98,7 @@
                     </div>
                 </div>
             </div>
-            <div class="returns-order">
+            <div class="returns-order" onclick="<?= isset($_SESSION['user_id']) ? "window.location.href='dashboard.php?module=checkout&pages=history'" : "return showLoginModal(event);" ?>">
                 <span>Returns</span>
                 <span>& Orders</span>
             </div>

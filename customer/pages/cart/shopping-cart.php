@@ -213,6 +213,7 @@
             >
             <div class="item-details">
               <div class="item-title" onclick="window.location.href='dashboard.php?module=product&pages=product-detail&id=<?= $row['product_id'] ?>'" style="cursor: pointer;"><?= htmlspecialchars($row['product_name']) ?></div>
+              <div class="badge"><?= htmlspecialchars($row['store_name']) ?></div>
               <div class="item-price">Rp. <?= number_format($row['product_price'], 0, ',', '.') ?></div>
               <div class="quantity-box">
                 <button class="btn-minus">-</button>
@@ -237,7 +238,7 @@
     <?php if ($itemCount > 0): ?>
       <div class="summary-section">
         <div class="subtotal">Subtotal (<?= $itemCount ?> item<?= $itemCount > 1 ? 's' : '' ?>):<br> <span id="subtotal-price" style="color:#B12704;">Rp. <?= number_format($subtotal, 0, ',', '.') ?></span></div>
-        <button class="checkout-btn">Proceed to checkout</button>
+        <button class="checkout-btn" onclick="window.location.href='dashboard.php?module=checkout&pages=list-checkout';">Proceed to checkout</button>
       </div>
     <?php endif; ?>
   </div>

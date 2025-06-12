@@ -10,15 +10,24 @@ class Cart extends Connection {
 
     public function getCartItems($user_id) {
         $stmt = $this->conn->getConnection()->prepare("
-            SELECT c.*, p.product_name, p.product_price, p.product_preview
+            SELECT 
+                c.cart_id,
+                c.product_id,
+                c.quantity,
+                p.product_name,
+                p.product_price,
+                p.product_preview,
+                s.store_name
             FROM cart c
             JOIN products p ON c.product_id = p.product_id
+            JOIN stores s ON p.store_id = s.store_id
             WHERE c.user_id = ?
         ");
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
         return $stmt->get_result();
     }
+    
 
     public function addToCart($user_id, $product_id, $quantity = 1) {
         // Check if item already in cart
@@ -83,6 +92,13 @@ class Cart extends Connection {
         $stmt->bind_param("iii", $quantity, $user_id, $product_id);
         return $stmt->execute();
     }
+
+    public function clearCart($userId) {
+        $stmt = $this->conn->getConnection()->prepare("DELETE FROM cart WHERE user_id = ?");
+        $stmt->bind_param("i", $userId);
+        return $stmt->execute();
+      }
+      
 }
 
 ?>
