@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Jika validasi lolos, update data
         if ($user->update($user_id, $email, $username, $password, $role_id, $profileImage)) {
             $success = "Akun pengguna berhasil di edit.";
-            $_SESSION['username'] = $username;
+            $_SESSION['admin_username'] = $username;
         } else {
             $error = "Gagal mengedit akun pengguna. Email atau username sudah ada.";
         }

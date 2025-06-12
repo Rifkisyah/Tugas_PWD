@@ -26,9 +26,9 @@
 <body class="home-page-body">
     <div class="nav-top">
         <div class="nav-left">
-            <img src="https://freelogopng.com/images/all_img/1688364164amazon-logo-transparent.png" alt="amazon-logo" id="amazon-logo" onclick="window.location.href='dashboard.php'">
+            <img src="../assets/images/icon/amazon-white.png" alt="amazon-logo" id="amazon-logo" onclick="window.location.href='dashboard.php'">
             <div class="delivery-location">
-                <img src="https://img.icons8.com/?size=100&id=WtxXrJ8eK5wU&format=png&color=FFFFFF" id="white-location-icon">
+                <img src="../assets/images/icon/location-white.png" id="white-location-icon">
                 <div class="location-description">
                     <span id="progresive-location-line1">Deliver to</span>
                     <span id="progresive-location-line2">Indonesia</span>
@@ -47,17 +47,18 @@
                 </select>
                 <input type="text" id="field-search" name="q" value="<?= isset($_GET['q']) ? htmlspecialchars($_GET['q']) : '' ?>" placeholder="Search...">
                 <button type="submit" id="button-search">
-                    <img src="https://cdn-icons-png.flaticon.com/128/54/54481.png" id="icon-search">
+                    <img src="../assets/images/icon/search-black.png" id="icon-search">
                 </button> 
             </form>
         </div>
         <div class="nav-tools">
-            <div class="language">
-                <img src="https://img.freepik.com/free-vector/illustration-indonesia-flag_53876-27131.jpg?ga=GA1.1.1722104604.1735956614&semt=ais_hybrid" id="country-flag">
-                <select type="dropdown" id="language-dropdown">
-                    <option>ID</option>
-                </select>
-            </div>
+        <div class="language">
+            <img src="../assets/images/icon/usa-country-flag.png" id="country-flag" alt="Country Flag">
+            <select id="language-dropdown" onchange="changeLanguage(this.value)">
+                <option value="en"  selected>ENG</option>
+                <option value="id">IDN</option>
+            </select>
+        </div>
             <!-- Pastikan session_start(); sudah dijalankan di file ini -->
             <div class="authentication" onmouseover="showDropdown()" onmouseout="hideDropdown()">
                 <a href="<?= isset($_SESSION['username']) ? '#' : 'signin.php' ?>" class="auth-button">
@@ -102,14 +103,14 @@
                 <span>& Orders</span>
             </div>
             <div class="cart" onclick="<?= $onclick ?>">
-                <img src="https://img.icons8.com/?size=100&id=9671&format=png&color=FFFFFF" id="cart-icon">
+                <img src="../assets/images/icon/shopping-cart-white.png" id="cart-icon">
                 <span>Cart</span>
             </div>
         </div>
     </div>
     <div class="nav-bottom">
         <div class="hamburger-menu">
-            <img src="https://img.icons8.com/?size=100&id=8113&format=png&color=FFFFFF" id="humberger-icon" alt="menu">
+            <img src="../assets/images/icon/burger-menu-white.png" id="humberger-icon" alt="menu">
             <span>All</span>
         </div>
         <ul>
@@ -252,6 +253,22 @@
 
         function closeLoginModal() {
             document.getElementById('loginModal').style.display = 'none';
+        }
+
+        function changeLanguage(lang) {
+            const flag = document.getElementById("country-flag");
+            
+            if (lang === "id") {
+                flag.src = "../assets/images/icon/id-country-flag.jpg";
+                flag.alt = "Indonesian Flag";
+                // Optional: redirect
+                // window.location.href = "index.php?lang=id";
+            } else if (lang === "en") {
+                flag.src = "../assets/images/icon/usa-country-flag.png";
+                flag.alt = "US Flag";
+                // Optional: redirect
+                // window.location.href = "index.php?lang=en";
+            }
         }
     </script>
     <div id="pageOverlay"></div>

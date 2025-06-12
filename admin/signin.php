@@ -10,7 +10,7 @@
     <img src="" class="auth-amazon-logo">
     <div class="input-container">
         <h2 class="header-label-auth">Sign in Admin</h2>
-        <form action="../controller/signin_process.php" method="POST">
+        <form action="../controller/signin_admin.php" method="POST">
             <input type="hidden" name="role" value="admin">
 
             <label for="email" class="label-input">Email</label>

@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    if(!isset($_SESSION['user_id'])){
+    if(!isset($_SESSION['admin_user_id'])){
         header('location: index.php');
     }
 
@@ -60,7 +60,7 @@
           <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fas fa-user"></i> <?php echo $_SESSION['username']; ?>
+              <i class="fas fa-user"></i> <?php echo $_SESSION['admin_username']; ?>
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="<?='dashboard.php?module=profile&pages=edit-profile';?>"><i class="fas fa-edit"></i> Profile</a>

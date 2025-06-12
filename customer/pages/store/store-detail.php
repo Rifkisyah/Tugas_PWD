@@ -3,6 +3,37 @@
     require_once('../model/Products.php');
     require_once '../model/cart.php';
 
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['store_id'])) {
+        require_once('../model/Stores.php');
+        session_start(); // Jika belum dipanggil sebelumnya
+    
+        ob_clean(); // Bersihkan buffer output
+        header('Content-Type: application/json');
+    
+        $storeObj = new Store();
+        $userId = $_SESSION['user_id'] ?? null;
+        $storeId = (int)$_POST['store_id'];
+        $action = $_POST['action'];
+    
+        if (!$userId || !$storeId) {
+            echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
+            exit;
+        }
+    
+        if ($action === 'follow') {
+            $storeObj->followStore($userId, $storeId);
+        } elseif ($action === 'unfollow') {
+            $storeObj->unfollowStore($userId, $storeId);
+        }
+    
+        echo json_encode([
+            'status' => 'success',
+            'isFollowing' => $storeObj->isUserFollowing($userId, $storeId),
+            'followerCount' => $storeObj->getFollowerCount($storeId)
+        ]);
+        exit; // Sangat penting untuk menghentikan proses lebih lanjut (HTML)
+    }
+
     $storeObj = new Store();
     $productObj = new Product();
     $cartModel = new Cart();
@@ -25,31 +56,6 @@
 
     $average_rating = floatval($store['avg_rating']);
     $total_ratings = intval($store['total_ratings']);
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['store_id'])) {
-        header('Content-Type: application/json');
-        $userId = $_SESSION['user_id'] ?? null;
-        $postStoreId = (int)$_POST['store_id'];
-    
-        if (!$userId) {
-            echo json_encode(['status' => 'error', 'message' => 'Anda harus login']);
-            exit;
-        }
-    
-        if ($_POST['action'] === 'follow') {
-            $storeObj->followStore($userId, $postStoreId);
-        } elseif ($_POST['action'] === 'unfollow') {
-            $storeObj->unfollowStore($userId, $postStoreId);
-        }
-    
-        echo json_encode([
-            'status' => 'success',
-            'isFollowing' => $storeObj->isUserFollowing($userId, $postStoreId),
-            'followerCount' => $storeObj->getFollowerCount($postStoreId)
-        ]);
-        exit;
-    }
-    
 
     // Generate visual stars
     if ($total_ratings > 0) {
@@ -85,22 +91,33 @@
             </div>
             <div class="follow-row">
                 <span id="follower-count"><?= $store['total_followers'] ?> Followers</span>
+                <?php if (!isset($_SESSION['user_id'])): ?>
                 <button 
-                    id="follow-btn" 
-                    class="<?= $isFollowing ? 'unfollow' : '' ?>" 
-                    data-following="<?= $isFollowing ? '1' : '0' ?>" 
+                    id="follow-btn"
+                    class="<?= $isFollowing ? 'unfollow' : '' ?>"
+                    data-following="<?= $isFollowing ? '1' : '0' ?>"
+                    data-store-id="<?= $storeId ?>"
+                    onclick="return showLoginModal(event);"
+                >
+                    <?= $isFollowing ? 'Unfollow' : 'Follow' ?>
+                </button>
+            <?php else: ?>
+                <button 
+                    id="follow-btn"
+                    class="<?= $isFollowing ? 'unfollow' : '' ?>"
+                    data-following="<?= $isFollowing ? '1' : '0' ?>"
                     data-store-id="<?= $storeId ?>"
                 >
                     <?= $isFollowing ? 'Unfollow' : 'Follow' ?>
                 </button>
-
+            <?php endif; ?>
             </div>
         </div>
 
         <div class="tab-header">
             <button class="tab-button" id="btn-products" onclick="showTab('products')">New Release</button>
             <button class="tab-button" id="btn-categories" onclick="showTab('categories')">Category Product</button>
-            <button class="tab-button" id="btn-categories" onclick="showTab('categories')">About Us</button>
+            <button class="tab-button" id="about" onclick="showTab('categories')">About Us</button>
         </div>
 
         <?php
@@ -179,6 +196,18 @@
             <div id="category-products" style="margin-top: 20px;"></div>
         </div>
     </div>
+
+    <div id="loginModal" class="modal-overlay" style="display:none;">
+      <div class="modal-box">
+        <h2>Account Required</h2>
+        <p>To proceed with this action, please Sign in or Sign up first.</p>
+        <div class="modal-actions">
+          <a href="signin.php" class="btn amazon-primary">signin</a>
+          <a href="signup.php" class="btn amazon-secondary">signup</a>
+        </div>
+        <button class="modal-close" onclick="closeLoginModal()">×</button>
+      </div>
+    </div>
     
     <script>
         function showTab(tabId) {
@@ -188,67 +217,56 @@
             document.getElementById('btn-' + tabId).classList.add('active');
         }
 
-        // document.addEventListener('DOMContentLoaded', () => {
-        //     showTab('products');
+        document.addEventListener('DOMContentLoaded', () => {
+            const followBtn = document.getElementById('follow-btn');
+            const followerCountSpan = document.getElementById('follower-count');
+            const storeId = followBtn.dataset.storeId;
 
-        //     const followBtn = document.getElementById('follow-btn');
-        //     if (followBtn) {
-        //         followBtn.addEventListener('click', () => {
-        //             const isFollowing = followBtn.dataset.following === "1";
-        //             const storeId = followBtn.dataset.storeId;
+            followBtn.addEventListener('click', () => {
+                if (!storeId) return;
 
-        //             fetch('', {
-        //                 method: 'POST',
-        //                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        //                 body: new URLSearchParams({
-        //                     action: isFollowing ? 'unfollow' : 'follow',
-        //                     store_id: storeId
-        //                 })
-        //             })
-        //             .then(res => res.json())
-        //             .then(data => {
-        //                 if (data.status === 'success') {
-        //                     followBtn.innerText = data.isFollowing ? 'Unfollow' : 'Follow';
-        //                     followBtn.dataset.following = data.isFollowing ? "1" : "0";
-        //                     document.getElementById('follower-count').innerText = `${data.followerCount} Followers`;
-        //                 }
-        //             });
-        //         });
-        //     }
-        // });
+                followBtn.disabled = true;
+                const action = followBtn.classList.contains('unfollow') ? 'unfollow' : 'follow';
 
-        const followBtn = document.getElementById('follow-btn');
-        const followerCountSpan = document.getElementById('follower-count');
-        const storeId = <?= json_encode($storeId) ?>;
-
-        followBtn.addEventListener('click', () => {
-            followBtn.disabled = true;
-
-            const action = followBtn.classList.contains('unfollow') ? 'unfollow' : 'follow';
-
-            fetch('', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `action=${action}&store_id=${storeId}`
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    if (data.isFollowing) {
-                        followBtn.textContent = 'Unfollow';
-                        followBtn.classList.add('unfollow');
+                fetch('', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `action=${action}&store_id=${storeId}`
+                })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.status === 'success') {
+                        if (data.isFollowing) {
+                            followBtn.classList.add('unfollow');
+                            followBtn.textContent = '✓ Unfollow';
+                        } else {
+                            followBtn.classList.remove('unfollow');
+                            followBtn.textContent = 'Follow';
+                        }
+                        followerCountSpan.textContent = `${data.followerCount} Followers`;
                     } else {
-                        followBtn.textContent = 'Follow';
-                        followBtn.classList.remove('unfollow');
+                        alert(data.message || 'Terjadi kesalahan');
                     }
-                    followerCountSpan.textContent = data.followerCount;
-                } else {
-                    alert(data.message || 'Terjadi kesalahan');
-                }
-            })
-            .catch(() => alert('Gagal menghubungi server'))
-            .finally(() => followBtn.disabled = false);
+                })
+                .catch(err => alert('Error: ' + err))
+                .finally(() => {
+                    followBtn.disabled = false;
+                });
+            });
         });
+
+        function showLoginModal(event) {
+            event.preventDefault();
+            document.getElementById('loginModal').style.display = 'flex';
+            return false;
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
     </script>
 </body>
 </html>

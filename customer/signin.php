@@ -7,10 +7,10 @@
     <title>Signin</title>
 </head>
 <body class="auth-page-body">
-<img src="../assets/images/1688361055amazon-logo-png.png" class="auth-amazon-logo">
+<img src="../assets/images/icon/amazon-black.png" class="auth-amazon-logo">
     <div class="input-container">
         <h2 class="header-label-auth">Sign in</h2>
-        <form action="../controller/signin_process.php" method="POST">
+        <form action="../controller/signin_customer.php" method="POST">
             <input type="hidden" name="role" value="customer">
 
             <label for="email" class="label-input">Email</label>

@@ -10,7 +10,7 @@
 <img src="" class="auth-amazon-logo">
     <div class="input-container">
         <h2 class="header-label-auth">Create Admin Account</h2>
-        <form action="../controller/signup_process.php" method="POST">
+        <form action="../controller/signup_admin.php" method="POST">
             <input type="hidden" name="role" value="admin">
 
             <label for="username" class="label-input">Your Name</label>

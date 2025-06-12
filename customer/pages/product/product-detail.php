@@ -209,19 +209,6 @@
         <?php endif; ?>
     </div>
 
-    <!-- 🚨 Modal Login Required -->
-    <div id="loginModal" class="modal-overlay" style="display:none;">
-      <div class="modal-box">
-        <h2>Account Required</h2>
-        <p>To proceed with this action, please Sign in or Sign up first.</p>
-        <div class="modal-actions">
-          <a href="signin.php" class="btn amazon-primary">signin</a>
-          <a href="signup.php" class="btn amazon-secondary">signup</a>
-        </div>
-        <button class="modal-close" onclick="closeLoginModal()">×</button>
-      </div>
-    </div>
-
 </div>
 
 <script>
@@ -234,16 +221,6 @@
 
   function resetZoom(image) {
     image.style.transformOrigin = 'center center';
-  }
-
-  function showLoginModal(event) {
-    event.preventDefault();
-    document.getElementById('loginModal').style.display = 'flex';
-    return false;
-  }
-
-  function closeLoginModal() {
-    document.getElementById('loginModal').style.display = 'none';
   }
 
   function setMainImage(thumbnail) {

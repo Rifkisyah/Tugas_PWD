@@ -134,6 +134,54 @@ body {
     gap: 5px;
 }
 
+.language {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    /* padding: 4px 6px; */
+    background-color: transparent;
+  }
+  
+  .language img {
+    width: 20px;
+    height: 14px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+  }
+  
+  .language-select-wrapper {
+    position: relative;
+  }
+  
+  #language-dropdown {
+    background-color: #131921;
+    color: white;
+    border: none;
+    font-size: 12px;
+    font-weight: bold;
+    /* padding: 4px 20px 4px 6px; */
+    border-radius: 4px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+  
+    /* Panah dropdown */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="10" viewBox="0 0 24 24" width="10" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+    background-size: 10px;
+  }
+  
+  /* Agar dropdown tidak meluber dan tetap ramping */
+  #language-dropdown option {
+    color: black;
+    background-color: white;
+    font-weight: bold;
+  }
+  
+
 .authentication {
     position: relative;
     display: inline-block;

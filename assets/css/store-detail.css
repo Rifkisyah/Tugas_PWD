@@ -83,6 +83,18 @@ body {
     cursor: pointer;
 }
 
+#follow-btn.unfollow {
+    background-color: #ccc; /* Warna pudar */
+    color: #333;
+    border: 1px solid #999;
+}
+
+#follow-btn.unfollow::before {
+    content: '✓ ';
+    font-weight: bold;
+    color: green;
+}
+
 #follow-btn:hover {
     background: rgb(8, 11, 15);
 }

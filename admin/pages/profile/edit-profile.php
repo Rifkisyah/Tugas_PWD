@@ -8,7 +8,7 @@
     $success = '';
 
     // Ambil foto dari database (untuk preview)
-    $photo = $user->getPhotoProfile($_SESSION['id']);
+    $photo = $user->getPhotoProfile($_SESSION['admin_user_id']);
     if (!$photo) {
         $photo = "default-photo-profile.jpg";
     }
@@ -56,7 +56,7 @@
             } else {
                 // Semua validasi lolos, lakukan update
                 $updated = $user->updateProfile(
-                    $_SESSION['id'],
+                    $_SESSION['admin_user_id'],
                     $email,
                     $username,
                     $password,
@@ -92,7 +92,7 @@
     </div>
 <?php else: ?>
     <div class="alert alert-info alert-dismissible fade show" role="alert">
-    <strong>Hi,</strong> Silahkan isi form dibawah ini untuk mengedit Profil. ID Pengguna Saat ini adalah <strong><?php echo $_SESSION['id']; ?></strong>
+    <strong>Hi,</strong> Silahkan isi form dibawah ini untuk mengedit Profil. ID Pengguna Saat ini adalah <strong><?php echo $_SESSION['admin_user_id']; ?></strong>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>

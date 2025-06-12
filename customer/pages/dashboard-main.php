@@ -117,7 +117,7 @@
                                 <p><?= htmlspecialchars($product['product_description']) ?></p>
 
                                 <?php if ($isInCart): ?>
-                                    <form method="POST" action="dashboard.php?module=cart&pages=cart-delete" onsubmit="return confirm('Hapus item dari cart?');">
+                                    <form method="POST" action="dashboard.php?module=cart&pages=cart-delete">
                                         <input type="hidden" name="cart_id" value="<?= htmlspecialchars($cartItem['cart_id']) ?>">
                                         <button type="submit" class="view-product-button">✓ Added</button>
                                     </form>
